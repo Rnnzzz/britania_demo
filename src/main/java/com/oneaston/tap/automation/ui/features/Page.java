@@ -39,21 +39,21 @@ public class Page {
         driver.manage().window().maximize();
     }
 
+    public void closeWindow(String windowTitle) {
+        driver.switchTo().window(getWindow(windowTitle));
+        driver.close();
+    }
+
     private String getWindow(String title) {
         Set<String> windowHandles = driver.getWindowHandles();
         String window = "";
         for (String windowHandle : windowHandles) {
-            window = checkIfHandleIsEqualToTitle(windowHandle, title);
+            if (driver.switchTo().window(windowHandle).getTitle().contains(title)) {
+                window =  windowHandle;
+                break;
+            }
         }
         return window;
-    }
-
-    private String checkIfHandleIsEqualToTitle(String windowHandle, String title) {
-        if (driver.switchTo().window(windowHandle).getTitle().contains(title)) {
-            return windowHandle;
-        } else {
-            return "";
-        }
     }
 
     public void acceptAlert() {

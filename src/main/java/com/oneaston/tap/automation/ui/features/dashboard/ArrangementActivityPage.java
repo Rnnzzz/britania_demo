@@ -23,6 +23,7 @@ public class ArrangementActivityPage extends Page {
         switchToWindow("AA ARRANGEMENT ACTIVITY");
         waitMechanism.waitUntilElementIsPresent(webElementLocator.setLocatorType("//a[@title='Arrangement']"));
         clickInteraction.clickElement("//a[@title='Authorises a deal']");
+        switchToWindow("AA Arrangement");
         return this;
     }
 }

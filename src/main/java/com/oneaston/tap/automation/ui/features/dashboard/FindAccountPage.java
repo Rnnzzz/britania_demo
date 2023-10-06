@@ -28,11 +28,13 @@ public class FindAccountPage extends Page {
     }
 
     public FindAccountPage clickAuthorisedTab() {
+        switchToWindow("AA Arrangement");
         clickInteraction.clickElement("//span[text()='Authorised']");
         return this;
     }
 
     public FindAccountPage clickSearchIcon() {
+        switchToWindow("AA Arrangement");
         clickInteraction.clickElement("//a[@title='Selection Screen']");
         return this;
     }
@@ -42,7 +44,7 @@ public class FindAccountPage extends Page {
         typeInteraction.type("//label[text()='Arrangement']/ancestor::td/following-sibling::td/input[@type='text']", arrangementID);
         clickInteraction.clickElement("//a[@title='Run Selection']");
         waitMechanism.waitUntilElementIsPresent(webElementLocator.setLocatorType("//td[text()='" + arrangementID + "']"));
-        return getInteraction.getElementText("//td[text()='AA20199LB4CH']/following-sibling::td[5]");
+        return getInteraction.getElementText("//td[text()='" + arrangementID+ "']/following-sibling::td[5]");
     }
 
     public ArrangementOverviewPage selectArangementOverview(String arrangementID) {

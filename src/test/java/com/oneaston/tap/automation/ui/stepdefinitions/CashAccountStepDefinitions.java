@@ -33,6 +33,7 @@ public class CashAccountStepDefinitions {
     @Then("account arrangement should be created")
     public void accountArrangementShouldBeCreated() {
         scenario.log("Created arrangement ID: " + arrangementId);
+        currentAccountPage.closeWindow("AA ARRANGEMENT ACTIVITY");
         currentAccountPage.switchToWindow("T24");
         DashboardPage dashboardPage = new DashboardPage(WebDriverFactory.getDriver());
         loginPage = dashboardPage.clickLogout();
@@ -47,7 +48,7 @@ public class CashAccountStepDefinitions {
     @Then("account status should be {string}")
     public void accountStatusShouldBe(String expectedStatus) {
         FindAccountPage findAccountPage = new FindAccountPage(WebDriverFactory.getDriver());
-        String status = findAccountPage.clickAuthorisedTab().clickSearchIcon().getArrangementStatus(arrangementId);
+        String status = findAccountPage.clickAuthorisedTab().getArrangementStatus(arrangementId);
         AssertionUtility.assertTrue(status.equalsIgnoreCase(expectedStatus), "Arrangement status is not yet " + expectedStatus);
 
     }
