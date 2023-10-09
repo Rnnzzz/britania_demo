@@ -16,7 +16,7 @@ public class CurrentAccountPage extends Page {
     ClickInteraction clickInteraction;
     WaitMechanism waitMechanism;
     SelectInteraction selectInteraction;
-    GetInteraction getInteraction;
+    public GetInteraction getInteraction;
 
     public CurrentAccountPage(WebDriver driver) {
         super(driver);
@@ -27,7 +27,7 @@ public class CurrentAccountPage extends Page {
         getInteraction = new GetInteraction(driver);
     }
 
-    public String createAccount(Map<String, String> data) {
+    public String createNewAccount(Map<String, String> data) {
         switchToWindow("AA ARRANGEMENT ACTIVITY");
         return populateFields(data);
     }
@@ -54,4 +54,12 @@ public class CurrentAccountPage extends Page {
     }
 
 
+    public void createAccount(Map<String, String> data) {
+        switchToWindow("AA ARRANGEMENT ACTIVITY");
+        typeInteraction.type("fieldName:CUSTOMER:1", data.get("customerID"));
+        typeInteraction.type("fieldName:CURRENCY", data.get("currency").replace("No Customer", ""));
+        selectRole(data.get("customerRole"));
+        typeInteraction.type("fieldName:REASON", data.get("reason"));
+        clickInteraction.clickElement("//a[@title='Validate a deal']");
+    }
 }

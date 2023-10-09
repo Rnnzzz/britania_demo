@@ -44,8 +44,4 @@ public class CommonStepDefinitions {
         dashboardPage.clickUserMenu().clickRetailOperations().clickProductCatalog().clickCurrentAccounts().openCurrentAccountForm();
     }
 
-    @Then("user should see an error message: {string}")
-    public void userShouldSeeAnErrorMessage(String errorMessage) {
-        System.out.println(errorMessage);
-    }
 }

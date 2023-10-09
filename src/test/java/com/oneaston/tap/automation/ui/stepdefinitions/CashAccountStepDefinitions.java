@@ -27,7 +27,7 @@ public class CashAccountStepDefinitions {
     public void userCreateNewCashAccount(String currency) {
         currentAccountPage = new CurrentAccountPage(WebDriverFactory.getDriver());
         testData = GetDataFromExcelFile.getData("currency", currency, "src/test/resources/testdata/features/account/account_creation.xlsx");
-        arrangementId = currentAccountPage.createAccount(testData);
+        arrangementId = currentAccountPage.createNewAccount(testData);
     }
 
     @Then("account arrangement should be created")
@@ -50,7 +50,6 @@ public class CashAccountStepDefinitions {
         FindAccountPage findAccountPage = new FindAccountPage(WebDriverFactory.getDriver());
         String status = findAccountPage.clickAuthorisedTab().getArrangementStatus(arrangementId);
         AssertionUtility.assertTrue(status.equalsIgnoreCase(expectedStatus), "Arrangement status is not yet " + expectedStatus);
-
     }
 
 
@@ -59,9 +58,21 @@ public class CashAccountStepDefinitions {
 
     }
 
+    @Then("user should see an error message: {string}")
+    public void userShouldSeeAnErrorMessage(String expectedError) {
+        String actualError = currentAccountPage.getInteraction.getElementText("//table[@id='errors']/descendant::span[contains(text(), '" + expectedError + "')]");
+        AssertionUtility.assertTextEquals(actualError, expectedError);
+    }
+
     @Before
     public void before(Scenario scenario) {
         this.scenario = scenario;
     }
 
+    @When("user create cash account {string}")
+    public void userCreateCashAccount(String currency) {
+        currentAccountPage = new CurrentAccountPage(WebDriverFactory.getDriver());
+        testData = GetDataFromExcelFile.getData("currency", currency, "src/test/resources/testdata/features/account/account_creation.xlsx");
+        currentAccountPage.createAccount(testData);
+    }
 }
