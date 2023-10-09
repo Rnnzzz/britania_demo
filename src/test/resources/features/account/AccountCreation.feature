@@ -17,7 +17,7 @@ Feature: Account Creation
 #      | BSD      |
 #      | AUD      |
 #      | BRL      |
-      | CAD      |
+#      | CAD      |
 #      | CHF      |
 #      | CNY      |
 #      | EUR      |
