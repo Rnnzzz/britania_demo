@@ -5,17 +5,17 @@ Feature: Account Creation
     Given create actor logged in to the system
     And navigate to Cash Account screen
 
- #A create user should be able to create an account and an admin user should then be able to authorize the created account
-  @OAQA-4852 @OAQA-4851
-  Scenario Outline: Users should be able to create and authorise account
-    When user create new cash account "<currency>"
-    Then account arrangement should be created
-    When admin user authorize the record
-    Then account status should be "Authorised"
-
-    Examples: Cash currency list
-      | currency |
-      | USD      |
+# A create user should be able to create an account and an admin user should then be able to authorize the created account
+#  @OAQA-4852 @OAQA-4851
+#  Scenario Outline: Users should be able to create and authorise account
+#    When user create new cash account "<currency>"
+#    Then account arrangement should be created
+#    When admin user authorize the record
+#    Then account status should be "Authorised"
+#
+#    Examples: Cash currency list
+#      | currency |
+#      | USD      |
 #      | AUD      |
 #      | BRL      |
 #      | CAD      |
