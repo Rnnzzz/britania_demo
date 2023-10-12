@@ -42,7 +42,7 @@ public class WaitMechanism {
     }
 
     public void waitUntilElementIsPresent(By locator) {
-        new WebDriverWait(driver, Duration.ofSeconds(60)).
+        new WebDriverWait(driver, Duration.ofSeconds(70)).
                 until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 

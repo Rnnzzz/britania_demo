@@ -9,10 +9,10 @@ import com.oneaston.tap.automation.ui.utils.excelfileutils.GetDataFromExcelFile;
 import com.oneaston.tap.automation.ui.utils.webdriver.WebDriverFactory;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CashAccountStepDefinitions {
@@ -23,20 +23,25 @@ public class CashAccountStepDefinitions {
     CurrentAccountPage currentAccountPage;
     LoginPage loginPage;
 
-    @Given("user create new cash account {string}")
+    @When("user create new cash account {string}")
     public void userCreateNewCashAccount(String currency) {
         currentAccountPage = new CurrentAccountPage(WebDriverFactory.getDriver());
         testData = GetDataFromExcelFile.getData("currency", currency, "src/test/resources/testdata/features/account/account_creation.xlsx");
-        arrangementId = currentAccountPage.createNewAccount(testData);
+        currentAccountPage.createAccount(testData);
     }
 
     @Then("account arrangement should be created")
     public void accountArrangementShouldBeCreated() {
-        scenario.log("Created arrangement ID: " + arrangementId);
-        currentAccountPage.closeWindow("AA ARRANGEMENT ACTIVITY");
-        currentAccountPage.switchToWindow("T24");
-        DashboardPage dashboardPage = new DashboardPage(WebDriverFactory.getDriver());
-        loginPage = dashboardPage.clickLogout();
+        try {
+            arrangementId = currentAccountPage.validateAccount();
+            scenario.log("Created arrangement ID: " + arrangementId);
+            currentAccountPage.closeWindow("AA ARRANGEMENT ACTIVITY");
+            currentAccountPage.switchToWindow("T24");
+            DashboardPage dashboardPage = new DashboardPage(WebDriverFactory.getDriver());
+            loginPage = dashboardPage.clickLogout();
+        } catch (Exception e) {
+            AssertionUtility.reportFail("Error in creating account | " + e.getMessage());
+        }
     }
 
     @When("admin user authorize the record")
@@ -50,12 +55,6 @@ public class CashAccountStepDefinitions {
         FindAccountPage findAccountPage = new FindAccountPage(WebDriverFactory.getDriver());
         String status = findAccountPage.clickAuthorisedTab().getArrangementStatus(arrangementId);
         AssertionUtility.assertTrue(status.equalsIgnoreCase(expectedStatus), "Arrangement status is not yet " + expectedStatus);
-    }
-
-
-    @When("user create new cash account with no customerID and currency")
-    public void userCreateNewCashAccountWithNoCustomerIDAndCurrency() {
-
     }
 
     @Then("user should see an error message: {string}")
@@ -74,5 +73,24 @@ public class CashAccountStepDefinitions {
         currentAccountPage = new CurrentAccountPage(WebDriverFactory.getDriver());
         testData = GetDataFromExcelFile.getData("currency", currency, "src/test/resources/testdata/features/account/account_creation.xlsx");
         currentAccountPage.createAccount(testData);
+    }
+
+    @When("user create cash account with {string} using client {string} as {string}")
+    public void userCreateCashAccountWithUsingClientAs(String currency, String customerID, String customerRole) {
+        try {
+            currentAccountPage = new CurrentAccountPage(WebDriverFactory.getDriver());
+            testData = createCustomerTestData(currency, customerID, customerRole);
+            currentAccountPage.createAccount(testData);
+        } catch (Exception e) {
+            AssertionUtility.reportFail("Error in creating account | " + e.getMessage());
+        }
+    }
+
+    private Map<String, String> createCustomerTestData(String currency, String customerID, String customerRole) {
+        Map<String, String> testdata = new HashMap<>();
+        testdata.put("currency", currency);
+        testdata.put("customerID", customerID);
+        testdata.put("customerRole", customerRole);
+        return testdata;
     }
 }

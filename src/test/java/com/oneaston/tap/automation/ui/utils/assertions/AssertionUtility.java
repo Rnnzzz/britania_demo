@@ -16,4 +16,8 @@ public class AssertionUtility {
     public static void assertTrue(boolean condition, String errorMsg) {
         Assert.assertTrue(condition, errorMsg);
     }
+
+    public static void reportFail(String s) {
+        Assert.fail(s);
+    }
 }
